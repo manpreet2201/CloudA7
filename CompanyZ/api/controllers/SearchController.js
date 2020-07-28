@@ -11,24 +11,35 @@ module.exports = {
   search: async function (req, res) {
     var job = req.body.jobName;
     let datetime = new Date().toISOString();
-    axios.get('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobByJobName/'+job)
-    .then(response => {
-      Search.create({jobName: job, date: datetime.slice(0,10), time: datetime.slice(11, 19)}).exec((err) => {
-        if (err) {
-          res.status(500).send("Database Error");
+    axios.get('https://eg1mx8iu96.execute-api.us-east-1.amazonaws.com/Dev/getJobByJobName', {
+        params: {
+            jobId: job
         }
-        //res.status(200).send('Job Found: Entry added');
-        res.redirect('/jobs/job/' + job);
-      });
     })
-    .catch(error => {
-      if(error.response.status === 404) {
-        // res.status(404).send('Job Not found');
-        res.view('pages/order', {
+    .then(response => {
+      console.log(response.data);
+      if (response.data.Count === 0) {
+        return res.view('pages/order', {
           result: 'failure',
-          message: 'Job not found'
+          message: 'No such job exists'
         });
       }
+      else {
+        Search.create({jobName: job, date: datetime.slice(0,10), time: datetime.slice(11, 19)}).exec((err) => {
+          if (err) {
+            res.status(500).send("Database Error");
+          }
+          //res.status(200).send('Job Found: Entry added');
+          res.redirect('/jobs/job/' + job);
+        });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.view('pages/order', {
+        result: 'failure',
+        message: 'Error occurred while searching for job'
+      });
     });
     // await Search.create({jobName: job, date: datetime.slice(0,10), time: datetime.slice(11, 19)}).intercept((err)=>{
     //   err.message = 'Uh oh: '+err.message;

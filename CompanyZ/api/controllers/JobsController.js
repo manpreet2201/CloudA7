@@ -10,10 +10,21 @@ const axios = require('axios');
 module.exports = {
 
   list: function(req, res) {
-    axios.get('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobs')
+    axios.get('https://eg1mx8iu96.execute-api.us-east-1.amazonaws.com/Dev/getJobs')
     .then(response => {
       // console.log(response);
-      res.view('pages/list', {jobs: response.data})
+      let allJobs = response.data.Items;
+      let jobsArr = [];
+      allJobs = allJobs.filter(job => {
+          if (jobsArr.includes(job.jobId)) {
+              return false;
+          } else {
+              jobsArr.push(job.jobId);
+              return true;
+          }
+      });
+      // console.log(allJobs);
+      res.view('pages/list', {jobs: allJobs});
     })
     .catch(error => {
       console.log(error);
@@ -35,18 +46,29 @@ module.exports = {
   parts: function(req, res) {
     let jobName = req.params.jobName;
 
-    axios.get('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobByJobName/' + jobName)
+    axios.get('https://eg1mx8iu96.execute-api.us-east-1.amazonaws.com/Dev/getJobByJobName', {
+        params: {
+            jobId: jobName
+        }
+    })
     .then(response => {
-      let partIds = [];
-      response.data.forEach(part => {
-        partIds.push(parseInt(part.partId))
-      });
+      if (response.data.Count == 0) {
+        return res.status(404).send(`Job with given jobId:${jobId} not found...`)
+      }
+      else {
+        let partIds = [];
+        console.log(response.data);
+        response.data.Items.forEach(part => {
+          partIds.push(parseInt(part.partId));
+        });
 
-      let parts = {partId: partIds};
-      let jobDetails = response.data;
+        let parts = {partId: partIds};
+        console.log(parts);
+        let jobDetails = response.data.Items;
 
-      axios.post('https://5fhqcifq9d.execute-api.us-east-1.amazonaws.com/Dev/getspecificpartdetailsforjob', parts)
+        axios.post('https://5fhqcifq9d.execute-api.us-east-1.amazonaws.com/Dev/getspecificpartdetailsforjob', parts)
           .then(response => {
+            console.log(response.data);
             let partDetails = response.data;
             res.view('pages/parts', {parts: partDetails, jobDetails: jobDetails, jobName: jobName});
           })
@@ -57,12 +79,13 @@ module.exports = {
               message: 'Error in fetching parts'
             });
           });
+      }
     })
     .catch(error => {
       console.log(error);
       res.view('pages/order', {
         result: 'failure',
-        message: 'Job not found'
+        message: 'Error in fetching job details'
       });
     });
  
@@ -140,7 +163,7 @@ module.exports = {
       console.log({partOrders});
 
       //Inform company X about the successful order
-      axios.post('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/createPartsOrder', partOrders)
+      axios.post('https://eg1mx8iu96.execute-api.us-east-1.amazonaws.com/Dev/createPartsOrder', partOrders)
         .then(response => {
           console.log("=================Company X success begin===================");
           console.log(response);

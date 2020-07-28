@@ -8,8 +8,8 @@
 </nav>
 <div class="list-group">
     <% jobs.forEach(function(job){ %>
-        <a href="/jobs/job/<%= job.id %>" class="list-group-item list-group-item-action">
-            <%= job.id %>
+        <a href="/jobs/job/<%= job.jobId %>" class="list-group-item list-group-item-action">
+            <%= job.jobId %>
         </a>
     <% }) %>
 </div>
