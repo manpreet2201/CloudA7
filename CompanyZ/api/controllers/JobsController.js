@@ -45,7 +45,7 @@ module.exports = {
       let parts = {partId: partIds};
       let jobDetails = response.data;
 
-      axios.post('http://129.173.67.223:3000/viewParts', parts)
+      axios.post('https://5fhqcifq9d.execute-api.us-east-1.amazonaws.com/Dev/getspecificpartdetailsforjob', parts)
           .then(response => {
             let partDetails = response.data;
             res.view('pages/parts', {parts: partDetails, jobDetails: jobDetails, jobName: jobName});
@@ -153,7 +153,7 @@ module.exports = {
         });
 
       //Inform company Y about the successful order
-      axios.post('http://129.173.67.223:3000/parts541/updatePartOrders', {orders: partOrders})
+      axios.post('https://ftwpcpljwe.execute-api.us-east-1.amazonaws.com/Dev/updatepartorders', partOrders)
         .then(response => {
           console.log("=================Company Y success begin===================");
           console.log(response);
