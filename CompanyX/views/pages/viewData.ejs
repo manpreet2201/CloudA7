@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include ('../templates/header') -%>
+  </head>
+  <body>
+    <%- include ('../templates/nav') -%>
+
+    <div class="container">
+        <style>
+            table, th, td {
+                padding: 10px;
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+        
+        <h1 class="display-4">Jobs Info</h1><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Job Name </th>
+                    <th>Part ID </th>
+                    <th>Quantity </th>
+                    <th>Actions</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody><% jobs735.forEach(function(job735){ %>
+                <tr>
+                    <td><%= job735.jobId %> </td>
+                    <td><%= job735.partId %> </td>
+                    <td><%= job735.qty %> </td>
+                    <td>
+                        <form class="d-inline" action="/editJob/<%=job735.jobId%>/<%=job735.partId%>" method="POST">
+                            <input type="submit" value="Update" class="btn btn-primary" />
+                        </form>
+                    </td>
+                    <td>
+                        <form class="d-inline" action="/deleteData/<%=job735.jobId%>/<%=job735.partId%>" method="POST">
+                            <input type="submit" value="Delete" class="btn btn-primary" />
+                        </form>
+                    </td>
+                </tr><% }) %>
+            </tbody>
+        </table><br>
+        
+        <form action="/">
+            <button class="btn btn-light">Home </button>
+        </form><br>
+        <form action="/addData">
+            <button class="btn btn-light">Add Data </button>
+        </form>        
+
+    </div>  
+
+    <%- include ('../templates/footer') -%>
+  </body>
+</html>
