@@ -1,0 +1,11 @@
+<% if(result === 'failure'){ %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" style="cursor: pointer;" onclick="history.back(-1)">⇦ Go Back</li>
+    </ol>
+<h3 style="color: red;"><%= message %></h1>
+<% } else {%>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active"><a href="/jobs/list">Go To Jobs</a></li>
+    </ol>
+<h3 style="color: green;"><%= message %></h1>
+    <% }  %>
