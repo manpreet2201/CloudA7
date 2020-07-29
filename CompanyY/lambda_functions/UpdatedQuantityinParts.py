@@ -6,7 +6,7 @@ def lambda_handler(event, context):
     ## get connection
     dynamodb = boto3.resource('dynamodb')
     
-    orders = event["orders"]
+    orders = event
     success = False
     
     for order in orders:
