@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../templates/header') -%>
+</head>
+
+<body>
+
+<header>
+    <%- include ('../templates/nav') -%>
+</header>
+
+<div class="container">
+    <h1 class="display-4">Parts</h1>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Part ID</th>
+            <th>Part Name</th>
+            <th>Quantity on Hands</th>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        <% for(let i = 0; i < parts.length; i++) { %>
+            <tr>
+                <td><%= parts[i].partId %></td>
+                <td><%= parts[i].partName %></td>
+                <td><%= parts[i].qoh %></td>
+                <td>
+                    <a href="/editpart/<%= parts[i].partId %>" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+</div>
+
+<footer>
+    <%- include ('../templates/footer') -%>
+</footer>
+
+
+</body>
+</html>

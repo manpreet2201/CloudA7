@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../templates/header') -%>
+</head>
+
+<body>
+
+<header>
+    <%- include ('../templates/nav') -%>
+</header>
+
+<div class="container">
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/parts">Parts</a></li>
+    <li class="breadcrumb-item active">Edit</li>
+</ol>
+
+<h1 class="display-4">Edit Part</h1>
+<form method="post" action="/parts/editpart">
+    <div class="form-group">
+        <label for="partId">Part ID</label>
+        <input type="number" name="partId" value="<%= part.partId %>" class="form-control" readonly>
+    </div>
+    <div class="form-group">
+        <label for="partName">Part Name</label>
+        <input type="text" name="partName" value="<%= part.partName %>" class="form-control" readonly>
+    </div>
+    <div class="form-group">
+        <label for="qoh">Quantity on Hands</label>
+        <input type="number" name="qoh" value="<%= part.qoh %>" class="form-control">
+    </div>
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+</div>
+
+<footer>
+    <%- include ('../templates/footer') -%>
+</footer>
+
+
+</body>
+</html>

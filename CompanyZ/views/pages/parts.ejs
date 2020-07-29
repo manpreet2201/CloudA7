@@ -1,0 +1,104 @@
+<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+<script type="text/javascript">
+    function postThing() {
+        io.socket.post('/jobs/validate', {username: document.getElementById("username").value, password:document.getElementById("password").value}, function responseFromServer (body, response) {
+            // console.log("The server responded with status " + response.statusCode + " and said: ", body);
+            if (response.statusCode == 200 ){
+                createData();
+                document.getElementById("myForm").submit();
+            }
+            else if (body === 'Invalid Credentials') {
+                $('#exampleModal').modal('toggle');
+                if ($('.msg-alert').html() === "") {
+                    $('.msg-alert').append(`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Invalid credentials!</strong> Please try again.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>`);
+                }
+            } 
+        });
+    }
+
+    function createData() {
+        let tableData = new Array();
+        $('.table tr').each(function (row, tr){
+            tableData[row] = {
+                "partId": $(tr).find('td:eq(0)').text(),
+                "partName": $(tr).find('td:eq(1)').text(),
+                "qty": $(tr).find('td:eq(2)').text(),
+                // "qoh": $(tr).find('td:eq(3)').text(),
+                "qoh": $(tr).find('input:hidden').val(),
+            }
+        });
+        tableData.shift();
+        //console.log(tableData);
+
+        let dataToPass = {jobName: $('#job-name').text(), tableData: tableData};
+        console.log(dataToPass);
+        $('#table-data').val(JSON.stringify(dataToPass));
+    }
+    
+    function dismissAlert() {
+        $('.alert').alert('close');
+    }
+  </script>
+
+<h1 class="display-4" id="job-name"><%= jobName %></h1>
+<div class="msg-alert"></div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Part ID</th>
+            <th>Part Name</th>
+            <th>Required Quantity</th>
+            <!-- <th>Available Quantity</th> -->
+            <input type="hidden" value="Available Quantity" />
+        </tr>
+    </thead>
+    <tbody>
+        <% for(let i = 0; i < parts.length; i++) { %>
+            <tr>
+                <td><%= parts[i].partId %></td>
+                <td><%= parts[i].partName %></td>
+                <td><%= jobDetails[i].qty %></td>
+                <!-- <td><%= parts[i].qoh %></td> -->
+                <input type="hidden" value="<%= parts[i].qoh %>" />
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+<button type="button" onclick="dismissAlert();" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Place Order</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Authentication</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" id="myForm" action="/jobs/validateOrder">
+          <div class="form-group">
+            <label for="username" class="col-form-label">Username:</label>
+            <input type="text" id="username" class="form-control" name="username">
+          </div>
+          <div class="form-group">
+            <label for="password" class="col-form-label">Password:</label>
+            <input type="password" id="password" class="form-control" name="password">
+          </div>
+          <div class="form-group">
+            <input type="hidden" class="form-control" name="parts" id="table-data">
+          </div>
+          <div class="form-group modal-footer">
+            <input type="button" class="btn btn-secondary" value="Close" data-dismiss="modal">
+            <input type="button" value="Login" onclick="Javascript:postThing();" class="btn btn-primary">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

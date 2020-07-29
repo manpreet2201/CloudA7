@@ -1,0 +1,15 @@
+<h1 class="display-4">Jobs</h1>
+
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline" action="/jobs/search" method="POST" onsubmit="return $('#jobName').val().length > 0">
+        <input class="form-control mr-sm-2" type="text" id="jobName" name="jobName" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+<div class="list-group">
+    <% jobs.forEach(function(job){ %>
+        <a href="/jobs/job/<%= job.jobId %>" class="list-group-item list-group-item-action">
+            <%= job.jobId %>
+        </a>
+    <% }) %>
+</div>

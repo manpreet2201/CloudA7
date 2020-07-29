@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include ('../templates/header') -%>
+  </head>
+  <body>
+    <%- include ('../templates/nav') -%>
+
+    <div class="container">
+        <h1 class="display-4">Create New Job! </h1>
+        <form action="/addData" method="POST">
+            <input type="text", name="jobId", placeholder="Enter Job ID", required>
+            <input type="text", name="partId", placeholder="Enter Part ID", required>
+            <input type="text", name="qty", placeholder="Enter Quantity", required>
+            <button class="btn btn-primary"> Submit </button>
+        </form><br>
+        <form action="/">
+            <button class="btn btn-light">Home </button>
+        </form><br>
+        <form action="/viewData">
+            <button class="btn btn-light">View Data </button>
+        </form>
+    </div>  
+
+    <%- include ('../templates/footer') -%>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../templates/header') -%>
+</head>
+
+<body>
+
+<header>
+    <%- include ('../templates/nav') -%>
+</header>
+
+<div class="container">
+    <h1 class="display-4">Order Search</h1>
+
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline" action="/order/search" method="POST" onsubmit="return $('#jobName').val().length > 0">
+            <input class="form-control mr-sm-2" type="text" id="jobName" name="jobName" placeholder="Enter Job Name..." aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+</div>
+
+<footer>
+    <%- include ('../templates/footer') -%>
+</footer>
+
+
+</body>
+</html>

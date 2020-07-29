@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include ('../templates/header') -%>
+  </head>
+  <body>
+    <%- include ('../templates/nav') -%>
+
+    <div class="container">
+        <h1 class="display-4">Update Quantity</h1>
+        <form method="POST" action="/updateData/<%=id%>/<%=partId%>">
+        <div>
+            <label for="name"> jobid : <%=id%> </label>
+        </div>
+        <div class="form-group">
+            <label for="name"> partId : <%= partId%> </label>
+        </div>
+        <div>
+            <input type="number" placeholder="quantity" name="qty" class="form-control" min="0" />
+        </div>
+  
+        <input type="submit" value="Submit" class="btn btn-primary" />
+  </form>
+    
+    </div>  
+
+    <%- include ('../templates/footer') -%>
+  </body>
+</html>
